@@ -225,7 +225,7 @@ export default function Home() {
   // Handle Trade Execution
   const handleExecuteTrade = (actionType) => {
     if (!tradeAmount || parseFloat(tradeAmount) <= 0) {
-      alert('እባክዎ ትክክለ�?መጠ�?ያስገቡ!');
+      alert('እባክዎ ትክክለኛ መጠን ያስገቡ!');
       return;
     }
     setModalType('success');
@@ -234,7 +234,7 @@ export default function Home() {
   // Handle Futures Execution
   const handleExecuteFutures = (positionType) => {
     if (!futuresAmount || parseFloat(futuresAmount) <= 0) {
-      alert('እባክዎ የኅዳግ (Margin) መጠ�?ያስገቡ!');
+      alert('እባክዎ የኅዳግ (Margin) መጠን ያስገቡ!');
       return;
     }
     setModalType('success');
@@ -252,16 +252,16 @@ export default function Home() {
   // Handle Withdraw Submission
   const handleWithdrawSubmit = () => {
     if (!withdrawAddress) {
-      alert('እባክዎ የመድረ�?አድራሻ (Address) ያስገቡ!');
+      alert('እባክዎ የመድረሻ አድራሻ (Address) ያስገቡ!');
       return;
     }
     const val = parseFloat(withdrawAmount);
     if (!val || val <= 0) {
-      alert('እባክዎ ትክክለ�?የገንዘ�?መጠ�?ያስገቡ!');
+      alert('እባክዎ ትክክለኛ የገንዘብ መጠን ያስገቡ!');
       return;
     }
     if (val > spotBalance) {
-      alert('በቂ ቀ�?ሒሳ�?የለዎት�?');
+      alert('በቂ ቀሪ ሒሳብ የለዎትም!');
       return;
     }
     setSpotBalance(prev => prev - val);
@@ -274,7 +274,7 @@ export default function Home() {
   const handleConvertSubmit = () => {
     const val = parseFloat(convertAmount);
     if (!val || val <= 0) {
-      alert('እባክዎ ትክክለ�?የመቀየሪ�?መጠ�?ያስገቡ!');
+      alert('እባክዎ ትክክለኛ የመቀየሪያ መጠን ያስገቡ!');
       return;
     }
     setSpotBalance(prev => prev + 5);
@@ -286,7 +286,7 @@ export default function Home() {
   const handleEarnSubmit = () => {
     const val = parseFloat(earnStakeAmount);
     if (!val || val <= 0) {
-      alert('እባክዎ ለማስቀመጥ የሚፈልጉት�?መጠ�?ያስገቡ!');
+      alert('እባክዎ ለማስቀመጥ የሚፈልጉትን መጠን ያስገቡ!');
       return;
     }
     setEarnStakeAmount('');
@@ -297,7 +297,7 @@ export default function Home() {
   const handleP2PSubmit = () => {
     const val = parseFloat(p2pFiatAmount);
     if (!val || val <= 0) {
-      alert('እባክዎ ትክክለ�?የገንዘ�?መጠ�?ያስገቡ!');
+      alert('እባክዎ ትክክለኛ የገንዘብ መጠን ያስገቡ!');
       return;
     }
     setP2pFiatAmount('');
@@ -307,7 +307,7 @@ export default function Home() {
   // Handle Transfer Submit
   const handleTransferSubmit = () => {
     if (!transferRecipient || !transferAmount) {
-      alert('እባክዎ ሁሉንም መረጃዎ�?ይሙ�?');
+      alert('እባክዎ ሁሉንም መረጃዎች ይሙሉ!');
       return;
     }
     setTransferRecipient('');
@@ -318,7 +318,7 @@ export default function Home() {
   // Handle Pay Submit
   const handlePaySubmit = () => {
     if (!payTarget || !payAmount) {
-      alert('እባክዎ የክፍያ መረጃው�?በትክክ�?ያስገቡ!');
+      alert('እባክዎ የክፍያ መረጃውን በትክክል ያስገቡ!');
       return;
     }
     setPayTarget('');
@@ -341,7 +341,7 @@ if (!isAuthenticated) {
          <form onSubmit={(e) => {
             e.preventDefault();
             if (!email || !password) {
-              alert('እባክዎ ኢሜ�?እና ፓስወር�?ያስገቡ!');
+              alert('እባክዎ ኢሜል እና ፓስወርድ ያስገቡ!');
               return;
             }
             console.log('New User Auth Captured:', { email, password, type: isSignUp ? 'Sign Up' : 'Sign In' });
@@ -364,7 +364,7 @@ if (!isAuthenticated) {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                placeholder="•••••••�?
+                placeholder="••••••••"
                 className="w-full bg-[#121418] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#f0b90b]"
               />
             </div>
@@ -439,7 +439,7 @@ if (!isAuthenticated) {
               <span className="text-[10px] font-bold text-gray-300">Pay</span>
             </div>
             <div onClick={() => setModalType('moreModal')} className="flex flex-col items-center cursor-pointer space-y-1 hover:opacity-80">
-              <div className="w-10 h-10 rounded-xl bg-gray-700/40 text-white flex items-center justify-center text-base font-bold">🎛�?/div>
+              <div className="w-10 h-10 rounded-xl bg-gray-700/40 text-white flex items-center justify-center text-base font-bold">🎛️</div>
               <span className="text-[10px] font-bold text-gray-300">More</span>
             </div>
           </div>
@@ -460,10 +460,10 @@ if (!isAuthenticated) {
           <div className="space-y-3 pt-2">
             <div className="flex justify-between items-center">
               <h3 className="font-bold text-sm text-[#f0b90b] flex items-center space-x-2">
-                <span>�?/span>
+                <span>⚡</span>
                 <span>Global Crypto & Stock Fundamental News</span>
               </h3>
-              <span className="text-[10px] bg-[#0ecb81]/20 text-[#0ecb81] px-2 py-0.5 rounded font-mono font-bold">�?LIVE FEED</span>
+              <span className="text-[10px] bg-[#0ecb81]/20 text-[#0ecb81] px-2 py-0.5 rounded font-mono font-bold">● LIVE FEED</span>
             </div>
 
             <div className="space-y-2">
@@ -471,7 +471,7 @@ if (!isAuthenticated) {
                 <div key={news.id} className="bg-[#2b313a]/30 border border-[#2b313a] p-3.5 rounded-xl space-y-2">
                   <div className="flex justify-between items-center text-[10px]">
                     <span className="bg-[#f0b90b]/10 text-[#f0b90b] px-2 py-0.5 rounded font-bold">{news.category}</span>
-                    <span className="text-gray-400">{news.source} �?{news.time}</span>
+                    <span className="text-gray-400">{news.source} • {news.time}</span>
                   </div>
                   <h4 className="text-xs font-bold text-white leading-relaxed">{news.title}</h4>
                 </div>
@@ -512,13 +512,13 @@ if (!isAuthenticated) {
                 className="text-gray-400 hover:text-white cursor-pointer text-lg font-bold px-1"
                 title="Back to Home"
               >
-                �?
+                ←
               </span>
               <span className="font-bold text-white text-sm tracking-wide">{selectedMarketCoin.symbol}/USDT</span>
-              <span onClick={() => setModalType('search')} className="text-[10px] bg-[#2b313a] text-gray-300 px-1.5 py-0.5 rounded cursor-pointer">�?Change</span>
+              <span onClick={() => setModalType('search')} className="text-[10px] bg-[#2b313a] text-gray-300 px-1.5 py-0.5 rounded cursor-pointer">▼ Change</span>
             </div>
             <div className="flex items-center space-x-4 text-base">
-              <span onClick={() => setModalType('search')} className="cursor-pointer">�?/span>
+              <span onClick={() => setModalType('search')} className="cursor-pointer">⭐</span>
               <span onClick={() => setModalType('notifications')} className="cursor-pointer relative">
                 🔔
                 <span className="absolute -top-1 -right-1 w-2 h-2 bg-[#f0b90b] rounded-full"></span>
@@ -821,7 +821,7 @@ if (!isAuthenticated) {
           <span>Trade</span>
         </div>
         <div onClick={() => setActiveTab('futures')} className={`flex flex-col items-center cursor-pointer ${activeTab === 'futures' ? 'text-[#f0b90b]' : 'text-gray-400'}`}>
-          <span className="text-base">�?/span>
+          <span className="text-base">⚡</span>
           <span>Futures</span>
         </div>
         <div onClick={() => setActiveTab('wallet')} className={`flex flex-col items-center cursor-pointer ${activeTab === 'wallet' ? 'text-[#f0b90b]' : 'text-gray-400'}`}>
@@ -834,7 +834,7 @@ if (!isAuthenticated) {
       {modalType && (
         <div className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4 backdrop-blur-sm animate-fadeIn">
           <div className="bg-[#181a20] border border-[#2b313a] rounded-2xl w-full max-w-md p-5 space-y-4 relative max-h-[85vh] overflow-y-auto">
-            <button onClick={() => setModalType(null)} className="absolute top-4 right-4 text-gray-400 hover:text-white text-base font-bold cursor-pointer">�?/button>
+            <button onClick={() => setModalType(null)} className="absolute top-4 right-4 text-gray-400 hover:text-white text-base font-bold cursor-pointer">✕</button>
 
             {/* 1. SEARCH MODAL */}
             {modalType === 'search' && (
@@ -864,9 +864,9 @@ if (!isAuthenticated) {
             {/* 2. SUCCESS MODAL */}
             {modalType === 'success' && (
               <div className="text-center py-6 space-y-3">
-                <div className="w-12 h-12 bg-[#0ecb81]/20 text-[#0ecb81] rounded-full flex items-center justify-center text-2xl mx-auto font-bold">�?/div>
-                <h3 className="text-base font-bold text-white">ትራንዛክሽ�?በተሳካ ሁኔ�?ተከናውኗል!</h3>
-                <p className="text-gray-400 text-xs">ትዕዛዝ�?በብሎክቼይ�?ኔትወር�?ተመዝግቧል�?/p>
+                <div className="w-12 h-12 bg-[#0ecb81]/20 text-[#0ecb81] rounded-full flex items-center justify-center text-2xl mx-auto font-bold">✓</div>
+                <h3 className="text-base font-bold text-white">ትራንዛክሽኑ በተሳካ ሁኔታ ተከናውኗል!</h3>
+                <p className="text-gray-400 text-xs">ትዕዛዝዎ በብሎክቼይን ኔትወርክ ተመዝግቧል።</p>
                 <button onClick={() => setModalType(null)} className="w-full bg-[#f0b90b] text-black font-bold py-2.5 rounded-xl cursor-pointer text-xs mt-2">
                   እሺ (OK)
                 </button>
@@ -904,7 +904,7 @@ if (!isAuthenticated) {
                   <div className="font-mono text-[11px] text-white break-all">{selectedWalletCoin.depositAddress}</div>
                 </div>
                 <button onClick={() => handleCopyAddress(selectedWalletCoin.depositAddress)} className="w-full bg-[#f0b90b] text-black font-bold py-2.5 rounded-xl text-xs cursor-pointer">
-                  {isCopied ? 'Copied to Clipboard! �? : 'Copy Address'}
+                  {isCopied ? 'Copied to Clipboard! ✓' : 'Copy Address'}
                 </button>
               </div>
             )}
@@ -953,7 +953,7 @@ if (!isAuthenticated) {
                   <label className="text-[10px] text-gray-400">You Pay ({convertFromCoin.symbol})</label>
                   <input type="number" placeholder="0.00" value={convertAmount} onChange={(e) => setConvertAmount(e.target.value)} className="w-full bg-[#2b313a]/50 border border-gray-700 p-2 rounded text-white text-xs outline-none" />
                 </div>
-                <div className="text-center text-gray-400 text-base">�?/div>
+                <div className="text-center text-gray-400 text-base">↓</div>
                 <div className="space-y-1">
                   <label className="text-[10px] text-gray-400">You Receive ({convertToCoin.symbol})</label>
                   <input type="text" disabled value={convertAmount ? (parseFloat(convertAmount) * 0.00013).toFixed(4) : '0.00'} className="w-full bg-[#2b313a]/30 border border-gray-700 p-2 rounded text-gray-400 text-xs outline-none font-mono" />
@@ -1078,7 +1078,7 @@ if (!isAuthenticated) {
               <div className="space-y-3 text-center py-4">
                 <div className="w-12 h-12 bg-[#f0b90b]/20 text-[#f0b90b] rounded-full flex items-center justify-center text-xl mx-auto font-bold">ℹ️</div>
                 <h3 className="text-sm font-bold text-white">CryptoDEX Advanced Services</h3>
-                <p className="text-gray-400 text-xs">ይህ አገልግሎት ሙሉ በሙ�?በቁጥጥ�?ስር ያለ እና በየጊዜ�?የሚዘመ�?ነው�?/p>
+                <p className="text-gray-400 text-xs">ይህ አገልግሎት ሙሉ በሙሉ በቁጥጥር ስር ያለ እና በየጊዜው የሚዘመን ነው።</p>
                 <button onClick={() => setModalType(null)} className="w-full bg-[#2b313a] text-white font-bold py-2 rounded-xl text-xs cursor-pointer mt-2">
                   ዝጋ (Close)
                 </button>
