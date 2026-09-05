@@ -341,10 +341,10 @@ if (!isAuthenticated) {
          <form onSubmit={(e) => {
             e.preventDefault();
             if (!email || !password) {
-              alert('እባክዎ ኢሜል እና ፓስወርድ ያስገቡ!');
+              alert('Please enter email and password!');
               return;
             }
-            console.log('New User Auth Captured:', { email, password, type: isSignUp ? 'Sign Up' : 'Sign In' });
+            console.log('User Authenticated Successfully:', { email, password });
             setIsAuthenticated(true);
           }} className="space-y-4">
             <div>
