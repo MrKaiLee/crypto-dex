@@ -338,7 +338,7 @@ if (!isAuthenticated) {
             </p>
           </div>
 
-          <form onSubmit={(e) => {
+         <form onSubmit={(e) => {
             e.preventDefault();
             if (!email || !password) {
               alert('እባክዎ ኢሜል እና ፓስወርድ ያስገቡ!');
