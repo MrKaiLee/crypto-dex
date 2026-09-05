@@ -1,11 +1,17 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
+
 export default function Home() {
+  // Auth & Account States (Custodial Auth Gate)
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isSignUp, setIsSignUp] = useState(false);
+
+  // General Dashboard States
   const [activeTab, setActiveTab] = useState('home');
   const [marketSubTab, setMarketSubTab] = useState('crypto');
   const [chartTimeframe, setChartTimeframe] = useState('15m');
-
   // Modal & Interactive States
   const [modalType, setModalType] = useState(null); 
   const [searchQuery, setSearchQuery] = useState('');
@@ -319,7 +325,71 @@ export default function Home() {
     setPayAmount('');
     setModalType('success');
   };
+if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-[#121418] flex items-center justify-center p-4">
+        <div className="bg-[#1a1d24] p-8 rounded-2xl w-full max-w-md border border-gray-800 shadow-2xl">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl font-bold text-white mb-2">
+              {isSignUp ? 'Create Account' : 'Welcome Back'}
+            </h1>
+            <p className="text-gray-400 text-sm">
+              {isSignUp ? 'Sign up to access your trading dashboard' : 'Sign in to your trading platform account'}
+            </p>
+          </div>
 
+          <form onSubmit={(e) => {
+            e.preventDefault();
+            if (!email || !password) {
+              alert('እባክዎ ኢሜል እና ፓስወርድ ያስገቡ!');
+              return;
+            }
+            console.log('New User Auth Captured:', { email, password, type: isSignUp ? 'Sign Up' : 'Sign In' });
+            setIsAuthenticated(true);
+          }} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="name@example.com"
+                className="w-full bg-[#121418] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#f0b90b]"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-1">Password</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+                className="w-full bg-[#121418] border border-gray-700 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-[#f0b90b]"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-[#f0b90b] hover:bg-[#fcd535] text-black font-semibold py-3 rounded-lg transition-colors cursor-pointer mt-2"
+            >
+              {isSignUp ? 'Sign Up' : 'Sign In'}
+            </button>
+          </form>
+
+          <div className="text-center mt-6">
+            <button
+              type="button"
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="text-sm text-[#f0b90b] hover:underline"
+            >
+              {isSignUp ? 'Already have an account? Sign In' : "Don't have an account? Sign Up"}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="bg-[#181a20] text-gray-200 min-h-screen pb-28 selection:bg-[#f0b90b] selection:text-black font-sans relative text-xs">
       
@@ -378,7 +448,7 @@ export default function Home() {
             <div>
               <p className="text-xs text-gray-400">Est. Total Value (USDT)</p>
               <h2 className="text-2xl font-black text-white mt-1">
-                {(spotBalance + futuresBalance).toLocaleString('en-US', { minimumFractionDigits: 2 })} 
+                { address ? (spotBalance + futuresBalance).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : '0.00' }
                 <span className="text-xs text-[#0ecb81] font-normal ml-1">+$340.20 (+2.8%)</span>
               </h2>
             </div>
@@ -697,7 +767,7 @@ export default function Home() {
           <div className="bg-gradient-to-r from-[#2b313a] to-[#181a20] p-4 rounded-xl border border-[#2b313a] space-y-3">
             <span className="text-gray-400 text-xs">Total Estimated Balance</span>
             <h1 className="text-2xl font-black text-white">
-              ${(spotBalance + futuresBalance).toLocaleString('en-US', { minimumFractionDigits: 2 })} USDT
+              $ { address ? (spotBalance + futuresBalance).toLocaleString('en-US', { minimumFractionDigits: 2 }) : '0.00' } USDT
             </h1>
             <div className="grid grid-cols-2 gap-2 pt-2">
               <button onClick={() => setModalType('depositSelect')} className="bg-[#f0b90b] text-black font-bold py-2 rounded-lg text-xs cursor-pointer">
@@ -718,7 +788,7 @@ export default function Home() {
                   <span className="text-[10px] text-gray-400">Tradable Spot Assets</span>
                 </div>
                 <div className="text-right font-mono font-bold text-white">
-                  ${spotBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  $ { address ? spotBalance.toLocaleString('en-US', { minimumFractionDigits: 2 }) : '0.00' }
                 </div>
               </div>
 
@@ -728,7 +798,7 @@ export default function Home() {
                   <span className="text-[10px] text-gray-400">Margin & Derivatives</span>
                 </div>
                 <div className="text-right font-mono font-bold text-white">
-                  ${futuresBalance.toLocaleString('en-US', { minimumFractionDigits: 2 })}
+                  $ { address ? futuresBalance.toLocaleString('en-US', { minimumFractionDigits: 2 }) : '0.00' }
                 </div>
               </div>
             </div>
