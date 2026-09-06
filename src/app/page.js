@@ -25,18 +25,18 @@ export default function Home() {
   const [leverage, setLeverage] = useState(20);
   const [futuresMarginMode, setFuturesMarginMode] = useState('Cross');
 
-  // Assets / Wallet States
-  const [spotBalance, setSpotBalance] = useState(1250.00);
-  const [futuresBalance, setFuturesBalance] = useState(500.00);
+  // Assets / Wallet States (Initial balance set to 0 for new users)
+  const [spotBalance, setSpotBalance] = useState(0.00);
+  const [futuresBalance, setFuturesBalance] = useState(0.00);
   
-  // Detailed Crypto Asset Holdings for User
+  // Detailed Crypto Asset Holdings for User (Initialized to 0)
   const [userCryptoHoldings, setUserCryptoHoldings] = useState({
-    BTC: 0.05,
-    ETH: 0.5,
-    SOL: 2.0,
-    USDT: 450.0,
-    XRP: 100.0,
-    BNB: 0.8
+    BTC: 0.0,
+    ETH: 0.0,
+    SOL: 0.0,
+    USDT: 0.0,
+    XRP: 0.0,
+    BNB: 0.0
   });
 
   // Deposit & Withdraw interactive states
@@ -221,7 +221,7 @@ export default function Home() {
     setTimeout(() => setCopiedAddress(false), 2000);
   };
 
-  // Handle Deposit Submit
+  // Handle Deposit Submit (Increases balance from 0)
   const handleDepositSubmit = (e) => {
     e.preventDefault();
     const amount = parseFloat(depositAmount);
@@ -347,13 +347,6 @@ export default function Home() {
     coin.symbol.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Filtered cryptos for withdraw (only coins where user has holdings > 0, matching search)
-  const filteredWithdrawCryptos = cryptoList.filter(coin => {
-    const hasHolding = (userCryptoHoldings[coin.symbol] || 0) > 0;
-    const matchesQuery = coin.name.toLowerCase().includes(searchQuery.toLowerCase()) || coin.symbol.toLowerCase().includes(searchQuery.toLowerCase());
-    return hasHolding && matchesQuery;
-  });
-
   // Auth Screen
   if (!isLoggedIn) {
     return (
@@ -426,7 +419,7 @@ export default function Home() {
   return (
     <div className="bg-[#181a20] text-gray-200 min-h-screen pb-28 selection:bg-[#f0b90b] selection:text-black font-sans relative text-xs">
       
-      {/* Top Header with Back Arrow when inside a feature */}
+      {/* Top Header */}
       <div className="bg-[#181a20] border-b border-[#2b313a] px-4 py-3 flex justify-between items-center sticky top-0 z-50">
         <div className="flex items-center space-x-3">
           {activeTab !== 'home' && (
@@ -474,7 +467,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Navigation Grid: Market and Trade placed right next to Home, followed by Convert, P2P, Earn, Transfer */}
+            {/* Navigation Grid */}
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
               <div onClick={() => setActiveTab('home')} className="bg-[#2b313a] border border-[#f0b90b] p-3 rounded-xl flex flex-col items-center justify-center cursor-pointer transition text-center">
                 <span className="text-xl mb-1">🏠</span>
@@ -526,7 +519,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Markets List Preview with Live Prices */}
+            {/* Markets List Preview */}
             <div className="bg-[#2b313a]/20 border border-[#2b313a] rounded-2xl p-4 space-y-3">
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-white text-sm">Market Trend & Live Prices</h3>
@@ -669,349 +662,214 @@ export default function Home() {
               </div>
               <div className="bg-[#181a20] p-4 rounded-xl border border-gray-800 flex flex-col justify-center space-y-2">
                 <span className="text-gray-400">Futures Margin Balance</span>
-                <span className="text-2xl font-bold text-white">${futuresBalance.toFixed(2)} USDT</span>
-                <button onClick={() => setModalType('transfer')} className="mt-2 bg-[#2b313a] text-white py-1.5 px-3 rounded text-xs font-semibold hover:bg-gray-700 cursor-pointer">Transfer Funds from Spot</button>
+                <span className="text-xl font-bold text-white">$0.00 USDT</span>
               </div>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'assets' && (
-          <div className="bg-[#2b313a]/20 border border-[#2b313a] p-6 rounded-2xl space-y-4">
-            <div className="flex items-center space-x-2">
-              <button onClick={() => setActiveTab('home')} className="bg-[#2b313a] text-white px-3 py-1 rounded cursor-pointer font-bold">⬅️ Back</button>
-              <h2 className="font-bold text-white text-base">Overview of Assets</h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="bg-[#181a20] p-4 rounded-xl border border-gray-800">
-                <span className="text-gray-400 block">Spot Account Balance</span>
-                <span className="text-xl font-bold text-white">${spotBalance.toFixed(2)}</span>
-              </div>
-              <div className="bg-[#181a20] p-4 rounded-xl border border-gray-800">
-                <span className="text-gray-400 block">Futures Account Balance</span>
-                <span className="text-xl font-bold text-white">${futuresBalance.toFixed(2)}</span>
-              </div>
-            </div>
-
-            <div className="bg-[#181a20] p-4 rounded-xl border border-gray-800 space-y-2">
-              <h3 className="font-bold text-white text-xs">Your Crypto Portfolio Holdings</h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                {Object.entries(userCryptoHoldings).map(([symbol, val]) => (
-                  <div key={symbol} className="bg-[#2b313a]/30 p-2.5 rounded border border-gray-800">
-                    <span className="text-gray-400 text-[10px]">{symbol}</span>
-                    <div className="font-bold text-white text-xs">{val.toFixed(4)}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div className="flex gap-3 pt-2">
-              <button onClick={() => setModalType('deposit')} className="bg-[#f0b90b] text-black font-bold px-4 py-2 rounded cursor-pointer">Deposit</button>
-              <button onClick={() => setModalType('withdraw')} className="bg-[#2b313a] text-white font-bold px-4 py-2 rounded cursor-pointer">Withdraw</button>
             </div>
           </div>
         )}
 
       </div>
 
-      {/* Deposit Modal */}
-      {modalType === 'deposit' && (
+      {/* Modals for Deposit, Withdraw, Convert, P2P, Earn, Transfer */}
+      {modalType && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#1e2329] border border-[#2b313a] p-6 rounded-2xl w-full max-w-lg space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center">
-              <h3 className="font-bold text-white text-sm">Deposit Crypto</h3>
-              <button onClick={() => { setModalType(null); setSearchQuery(''); }} className="text-gray-400 hover:text-white font-bold text-base cursor-pointer">✕</button>
-            </div>
+          <div className="bg-[#1e2329] border border-[#2b313a] rounded-2xl w-full max-w-md p-6 space-y-4 relative">
+            <button onClick={() => setModalType(null)} className="absolute right-4 top-4 text-gray-400 hover:text-white font-bold text-sm">✕</button>
 
-            <div className="space-y-3">
-              <label className="text-gray-400 block">Search & Select Cryptocurrency</label>
-              <input 
-                type="text" 
-                value={searchQuery} 
-                onChange={(e) => setSearchQuery(e.target.value)} 
-                placeholder="Search coin (e.g., BTC, ETH)..." 
-                className="w-full bg-[#181a20] border border-gray-700 p-2 rounded text-white outline-none focus:border-[#f0b90b]"
-              />
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 max-h-36 overflow-y-auto p-1 bg-[#181a20] rounded border border-gray-800">
-                {filteredCryptos.map((coin) => (
-                  <div 
-                    key={coin.symbol} 
-                    onClick={() => setSelectedMarketCoin(coin)}
-                    className={`p-2 rounded cursor-pointer border text-center transition ${selectedMarketCoin.symbol === coin.symbol ? 'border-[#f0b90b] bg-[#f0b90b]/10 text-white' : 'border-gray-800 text-gray-400 hover:border-gray-600'}`}
+            {modalType === 'deposit' && (
+              <div className="space-y-4">
+                <h3 className="font-bold text-white text-base">Deposit Cryptocurrency</h3>
+                <div>
+                  <label className="text-gray-400 block mb-1">Select Coin</label>
+                  <select 
+                    value={selectedMarketCoin.symbol}
+                    onChange={(e) => {
+                      const found = cryptoList.find(c => c.symbol === e.target.value);
+                      if (found) setSelectedMarketCoin(found);
+                    }}
+                    className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white outline-none focus:border-[#f0b90b]"
                   >
-                    <div className="font-bold">{coin.symbol}</div>
-                    <div className="text-[10px]">${coin.price}</div>
-                  </div>
-                ))}
-              </div>
+                    {cryptoList.map(c => <option key={c.symbol} value={c.symbol}>{c.name} ({c.symbol})</option>)}
+                  </select>
+                </div>
 
-              <div className="bg-[#181a20] p-4 rounded-xl border border-gray-800 space-y-2">
-                <div className="text-xs text-gray-400">Selected Coin: <span className="text-white font-bold">{selectedMarketCoin.name} ({selectedMarketCoin.symbol})</span></div>
-                <div className="text-xs text-gray-400">Network: <span className="text-[#f0b90b] font-medium">{selectedMarketCoin.network}</span></div>
-                
-                <div className="pt-2">
-                  <span className="text-gray-400 block mb-1">Deposit Address:</span>
-                  <div className="flex items-center justify-between bg-[#2b313a] p-2.5 rounded border border-gray-700 text-xs font-mono text-white break-all">
+                <div className="bg-[#181a20] p-3 rounded-xl border border-gray-800 space-y-2">
+                  <div className="text-gray-400 text-[10px]">Deposit Address ({selectedMarketCoin.network})</div>
+                  <div className="flex justify-between items-center bg-black/30 p-2 rounded text-white font-mono text-[11px] break-all">
                     <span>{selectedMarketCoin.depositAddress}</span>
-                    <button 
-                      onClick={() => handleCopy(selectedMarketCoin.depositAddress)}
-                      className="ml-2 bg-[#f0b90b] text-black px-2.5 py-1 rounded font-bold hover:bg-[#d9a70a] shrink-0 cursor-pointer"
-                    >
+                    <button onClick={() => handleCopy(selectedMarketCoin.depositAddress)} className="ml-2 bg-[#2b313a] px-2 py-1 rounded text-white font-sans text-[10px]">
                       {copiedAddress ? 'Copied!' : 'Copy'}
                     </button>
                   </div>
                 </div>
-              </div>
 
-              <form onSubmit={handleDepositSubmit} className="space-y-3 pt-2">
+                <form onSubmit={handleDepositSubmit} className="space-y-3">
+                  <div>
+                    <label className="text-gray-400 block mb-1">Deposit Amount ({selectedMarketCoin.symbol})</label>
+                    <input 
+                      type="number" 
+                      step="any"
+                      placeholder="0.00" 
+                      value={depositAmount}
+                      onChange={(e) => setDepositAmount(e.target.value)}
+                      className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white outline-none focus:border-[#f0b90b]" 
+                    />
+                  </div>
+                  <button type="submit" className="w-full bg-[#f0b90b] hover:bg-[#d9a70a] text-black font-bold p-2.5 rounded cursor-pointer">
+                    Confirm Deposit
+                  </button>
+                </form>
+              </div>
+            )}
+
+            {modalType === 'withdraw' && (
+              <div className="space-y-4">
+                <h3 className="font-bold text-white text-base">Withdraw Cryptocurrency</h3>
                 <div>
-                  <label className="text-gray-400 block mb-1">Deposit Amount ({selectedMarketCoin.symbol})</label>
-                  <input 
-                    type="number" 
-                    step="any"
-                    value={depositAmount} 
-                    onChange={(e) => setDepositAmount(e.target.value)} 
-                    placeholder="Enter amount to deposit" 
-                    required
+                  <label className="text-gray-400 block mb-1">Select Coin to Withdraw</label>
+                  <select 
+                    value={selectedWithdrawCoin.symbol}
+                    onChange={(e) => {
+                      const found = cryptoList.find(c => c.symbol === e.target.value);
+                      if (found) setSelectedWithdrawCoin(found);
+                    }}
                     className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white outline-none focus:border-[#f0b90b]"
-                  />
+                  >
+                    {cryptoList.map(c => (
+                      <option key={c.symbol} value={c.symbol}>
+                        {c.name} ({c.symbol}) - Avail: {(userCryptoHoldings[c.symbol] || 0).toFixed(4)}
+                      </option>
+                    ))}
+                  </select>
                 </div>
-                <button type="submit" className="w-full bg-[#f0b90b] hover:bg-[#d9a70a] text-black font-bold p-2.5 rounded cursor-pointer">
-                  Confirm Deposit
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
 
-      {/* Withdraw Modal with full asset validation & search */}
-      {modalType === 'withdraw' && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#1e2329] border border-[#2b313a] p-6 rounded-2xl w-full max-w-md space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center">
-              <h3 className="font-bold text-white text-sm">Withdraw Crypto</h3>
-              <button onClick={() => { setModalType(null); setSearchQuery(''); }} className="text-gray-400 hover:text-white font-bold text-base cursor-pointer">✕</button>
-            </div>
-
-            <div className="space-y-3">
-              <label className="text-gray-400 block">Search & Select Coin from your Account</label>
-              <input 
-                type="text" 
-                value={searchQuery} 
-                onChange={(e) => setSearchQuery(e.target.value)} 
-                placeholder="Search your owned coin..." 
-                className="w-full bg-[#181a20] border border-gray-700 p-2 rounded text-white outline-none focus:border-[#f0b90b]"
-              />
-
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-32 overflow-y-auto p-1 bg-[#181a20] rounded border border-gray-800">
-                {filteredWithdrawCryptos.length > 0 ? (
-                  filteredWithdrawCryptos.map((coin) => (
-                    <div 
-                      key={coin.symbol} 
-                      onClick={() => setSelectedWithdrawCoin(coin)}
-                      className={`p-2 rounded cursor-pointer border text-center transition ${selectedWithdrawCoin.symbol === coin.symbol ? 'border-[#f0b90b] bg-[#f0b90b]/10 text-white' : 'border-gray-800 text-gray-400 hover:border-gray-600'}`}
-                    >
-                      <div className="font-bold">{coin.symbol}</div>
-                      <div className="text-[10px]">Bal: {(userCryptoHoldings[coin.symbol] || 0).toFixed(2)}</div>
-                    </div>
-                  ))
-                ) : (
-                  <div className="col-span-full text-center text-gray-500 py-4">No crypto assets found with positive balance. Deposit first!</div>
-                )}
+                <form onSubmit={handleWithdrawSubmit} className="space-y-3">
+                  <div>
+                    <label className="text-gray-400 block mb-1">Destination Address</label>
+                    <input 
+                      type="text" 
+                      placeholder="Paste withdrawal address" 
+                      value={withdrawAddress}
+                      onChange={(e) => setWithdrawAddress(e.target.value)}
+                      className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white outline-none focus:border-[#f0b90b]" 
+                    />
+                  </div>
+                  <div>
+                    <label className="text-gray-400 block mb-1">
+                      Amount (Available: {(userCryptoHoldings[selectedWithdrawCoin.symbol] || 0).toFixed(4)} {selectedWithdrawCoin.symbol})
+                    </label>
+                    <input 
+                      type="number" 
+                      step="any"
+                      placeholder="0.00" 
+                      value={withdrawAmount}
+                      onChange={(e) => setWithdrawAmount(e.target.value)}
+                      className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white outline-none focus:border-[#f0b90b]" 
+                    />
+                  </div>
+                  <button type="submit" className="w-full bg-red-500 hover:bg-red-600 text-white font-bold p-2.5 rounded cursor-pointer">
+                    Confirm Withdrawal
+                  </button>
+                </form>
               </div>
+            )}
 
-              <div className="bg-[#181a20] p-3 rounded border border-gray-800 text-xs flex justify-between items-center">
-                <span className="text-gray-400">Selected Coin Balance:</span> 
-                <span className="text-white font-bold">{(userCryptoHoldings[selectedWithdrawCoin.symbol] || 0).toFixed(4)} {selectedWithdrawCoin.symbol}</span>
+            {modalType === 'convert' && (
+              <div className="space-y-4">
+                <h3 className="font-bold text-white text-base">Instant Crypto Convert</h3>
+                <form onSubmit={handleConvertSubmit} className="space-y-3">
+                  <div>
+                    <label className="text-gray-400 block mb-1">From</label>
+                    <select value={convertFromCoin} onChange={(e) => setConvertFromCoin(e.target.value)} className="w-full bg-[#181a20] border border-gray-700 p-2 rounded text-white">
+                      {cryptoList.map(c => <option key={c.symbol} value={c.symbol}>{c.symbol} (Avail: {(userCryptoHoldings[c.symbol] || 0).toFixed(4)})</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-gray-400 block mb-1">To</label>
+                    <select value={convertToCoin} onChange={(e) => setConvertToCoin(e.target.value)} className="w-full bg-[#181a20] border border-gray-700 p-2 rounded text-white">
+                      {cryptoList.map(c => <option key={c.symbol} value={c.symbol}>{c.symbol}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-gray-400 block mb-1">Amount</label>
+                    <input type="number" step="any" placeholder="0.00" value={convertAmount} onChange={(e) => setConvertAmount(e.target.value)} className="w-full bg-[#181a20] border border-gray-700 p-2 rounded text-white" />
+                  </div>
+                  <button type="submit" className="w-full bg-[#f0b90b] text-black font-bold p-2.5 rounded cursor-pointer">Convert Now</button>
+                </form>
               </div>
+            )}
 
-              <form onSubmit={handleWithdrawSubmit} className="space-y-3">
-                <div>
-                  <label className="text-gray-400 block mb-1">Withdrawal Address ({selectedWithdrawCoin.network})</label>
-                  <input 
-                    type="text" 
-                    value={withdrawAddress}
-                    onChange={(e) => setWithdrawAddress(e.target.value)}
-                    placeholder="Enter external wallet address" 
-                    required
-                    className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white outline-none focus:border-[#f0b90b]" 
-                  />
+            {modalType === 'p2p' && (
+              <div className="space-y-4">
+                <h3 className="font-bold text-white text-base">P2P Express Trading</h3>
+                <div className="flex gap-2">
+                  <button onClick={() => setP2pType('buy')} className={`flex-1 py-1.5 rounded font-bold ${p2pType === 'buy' ? 'bg-[#0ecb81] text-black' : 'bg-[#181a20] text-gray-400'}`}>Buy USDT</button>
+                  <button onClick={() => setP2pType('sell')} className={`flex-1 py-1.5 rounded font-bold ${p2pType === 'sell' ? 'bg-red-500 text-white' : 'bg-[#181a20] text-gray-400'}`}>Sell USDT</button>
                 </div>
-                <div>
-                  <label className="text-gray-400 block mb-1">Amount ({selectedWithdrawCoin.symbol})</label>
-                  <input 
-                    type="number" 
-                    step="any"
-                    value={withdrawAmount}
-                    onChange={(e) => setWithdrawAmount(e.target.value)}
-                    placeholder="0.00" 
-                    required
-                    className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white outline-none focus:border-[#f0b90b]" 
-                  />
-                </div>
-                <button type="submit" className="w-full bg-[#f0b90b] hover:bg-[#d9a70a] text-black font-bold p-2.5 rounded cursor-pointer">
-                  Confirm Withdrawal
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Convert Modal */}
-      {modalType === 'convert' && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#1e2329] border border-[#2b313a] p-6 rounded-2xl w-full max-w-md space-y-4">
-            <div className="flex justify-between items-center">
-              <h3 className="font-bold text-white text-sm">Binance Convert</h3>
-              <button onClick={() => setModalType(null)} className="text-gray-400 hover:text-white font-bold text-base cursor-pointer">✕</button>
-            </div>
-            <form onSubmit={handleConvertSubmit} className="space-y-3">
-              <div>
-                <label className="text-gray-400 block mb-1">From Coin</label>
-                <select value={convertFromCoin} onChange={(e) => setConvertFromCoin(e.target.value)} className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white">
-                  {Object.keys(userCryptoHoldings).map(sym => (
-                    <option key={sym} value={sym}>{sym} (Avail: {(userCryptoHoldings[sym] || 0).toFixed(2)})</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="text-gray-400 block mb-1">To Coin</label>
-                <select value={convertToCoin} onChange={(e) => setConvertToCoin(e.target.value)} className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white">
-                  {cryptoList.map(c => (
-                    <option key={c.symbol} value={c.symbol}>{c.name} ({c.symbol})</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="text-gray-400 block mb-1">Amount to Convert</label>
-                <input type="number" step="any" value={convertAmount} onChange={(e) => setConvertAmount(e.target.value)} placeholder="0.00" required className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white" />
-              </div>
-              <button type="submit" className="w-full bg-[#f0b90b] text-black font-bold p-2.5 rounded cursor-pointer">Preview Conversion</button>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* P2P Modal */}
-      {modalType === 'p2p' && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#1e2329] border border-[#2b313a] p-6 rounded-2xl w-full max-w-lg space-y-4 max-h-[90vh] overflow-y-auto">
-            <div className="flex justify-between items-center">
-              <h3 className="font-bold text-white text-sm">P2P Express Trading</h3>
-              <button onClick={() => setModalType(null)} className="text-gray-400 hover:text-white font-bold text-base cursor-pointer">✕</button>
-            </div>
-            <div className="flex gap-2">
-              <button onClick={() => setP2pType('buy')} className={`flex-1 py-2 font-bold rounded cursor-pointer ${p2pType === 'buy' ? 'bg-[#0ecb81] text-black' : 'bg-[#181a20] text-gray-400'}`}>Buy USDT</button>
-              <button onClick={() => setP2pType('sell')} className={`flex-1 py-2 font-bold rounded cursor-pointer ${p2pType === 'sell' ? 'bg-red-500 text-black' : 'bg-[#181a20] text-gray-400'}`}>Sell USDT</button>
-            </div>
-            <div className="space-y-3">
-              <div className="bg-[#181a20] p-3 rounded border border-gray-800 flex justify-between items-center">
-                <div>
-                  <div className="font-bold text-white">Merchant: CryptoKing_P2P</div>
-                  <div className="text-[10px] text-gray-400">99.8% Completion • 1,420 Orders • Bank Transfer / Telebirr</div>
-                </div>
-                <div className="text-right">
-                  <div className="font-bold text-[#0ecb81]">1.00 USD</div>
-                  <button onClick={() => alert(`P2P Trade Order initialized successfully!`)} className={`mt-1 px-3 py-1 font-bold text-black rounded text-xs cursor-pointer ${p2pType === 'buy' ? 'bg-[#0ecb81]' : 'bg-red-500'}`}>
-                    {p2pType === 'buy' ? 'Buy' : 'Sell'}
+                <div className="bg-[#181a20] p-3 rounded-xl border border-gray-800 space-y-2">
+                  <div className="flex justify-between">
+                    <span className="font-bold text-white">Merchant: CryptoExpress_VIP</span>
+                    <span className="text-[#0ecb81]">100% Completion</span>
+                  </div>
+                  <div className="text-gray-400 text-[10px]">Price: 1.00 USD | Limit: $10 - $5,000</div>
+                  <button onClick={() => alert(`P2P Order initiated successfully!`)} className="w-full bg-[#f0b90b] text-black font-bold p-2 rounded mt-2 cursor-pointer">
+                    {p2pType === 'buy' ? 'Buy USDT' : 'Sell USDT'}
                   </button>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-      )}
+            )}
 
-      {/* Earn Modal */}
-      {modalType === 'earn' && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#1e2329] border border-[#2b313a] p-6 rounded-2xl w-full max-w-md space-y-4">
-            <div className="flex justify-between items-center">
-              <h3 className="font-bold text-white text-sm">Binance Simple Earn</h3>
-              <button onClick={() => setModalType(null)} className="text-gray-400 hover:text-white font-bold text-base cursor-pointer">✕</button>
-            </div>
-            <div className="space-y-3">
-              <div className="bg-[#181a20] p-4 rounded-xl border border-gray-800 space-y-2">
-                <div className="flex justify-between items-center">
-                  <span className="font-bold text-white">USDT Flexible Staking</span>
-                  <span className="text-[#0ecb81] font-bold">12.5% APR</span>
+            {modalType === 'earn' && (
+              <div className="space-y-4">
+                <h3 className="font-bold text-white text-base">Binance Earn (Staking)</h3>
+                <div className="bg-[#181a20] p-3 rounded-xl border border-gray-800 flex justify-between items-center">
+                  <div>
+                    <div className="font-bold text-white">USDT Flexible Staking</div>
+                    <div className="text-[#0ecb81] font-bold">12.5% APR</div>
+                  </div>
+                  <button onClick={() => alert('Successfully subscribed to Binance Earn!')} className="bg-[#f0b90b] text-black font-bold px-3 py-1.5 rounded cursor-pointer">Stake</button>
                 </div>
-                <p className="text-gray-400 text-[10px]">Earn daily rewards with flexible redemption at any time.</p>
-                <button onClick={() => alert('Successfully subscribed to Binance Earn!')} className="w-full bg-[#f0b90b] text-black font-bold p-2 rounded mt-2 cursor-pointer">Subscribe</button>
               </div>
-            </div>
+            )}
+
+            {modalType === 'transfer' && (
+              <div className="space-y-4">
+                <h3 className="font-bold text-white text-base">Internal Wallet Transfer</h3>
+                <form onSubmit={handleTransferSubmit} className="space-y-3">
+                  <div className="flex gap-2">
+                    <div className="flex-1">
+                      <label className="text-gray-400 block mb-1">From</label>
+                      <select value={transferFrom} onChange={(e) => setTransferFrom(e.target.value)} className="w-full bg-[#181a20] border border-gray-700 p-2 rounded text-white">
+                        <option value="Spot">Spot Wallet</option>
+                        <option value="Futures">Futures Wallet</option>
+                      </select>
+                    </div>
+                    <div className="flex-1">
+                      <label className="text-gray-400 block mb-1">To</label>
+                      <select value={transferTo} onChange={(e) => setTransferTo(e.target.value)} className="w-full bg-[#181a20] border border-gray-700 p-2 rounded text-white">
+                        <option value="Futures">Futures Wallet</option>
+                        <option value="Spot">Spot Wallet</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="text-gray-400 block mb-1">Coin</label>
+                    <select value={transferCoin} onChange={(e) => setTransferCoin(e.target.value)} className="w-full bg-[#181a20] border border-gray-700 p-2 rounded text-white">
+                      {cryptoList.map(c => <option key={c.symbol} value={c.symbol}>{c.symbol}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-gray-400 block mb-1">Amount</label>
+                    <input type="number" step="any" placeholder="0.00" value={transferAmount} onChange={(e) => setTransferAmount(e.target.value)} className="w-full bg-[#181a20] border border-gray-700 p-2 rounded text-white" />
+                  </div>
+                  <button type="submit" className="w-full bg-[#f0b90b] text-black font-bold p-2.5 rounded cursor-pointer">Confirm Transfer</button>
+                </form>
+              </div>
+            )}
+
           </div>
         </div>
       )}
-
-      {/* Transfer Modal */}
-      {modalType === 'transfer' && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
-          <div className="bg-[#1e2329] border border-[#2b313a] p-6 rounded-2xl w-full max-w-md space-y-4">
-            <div className="flex justify-between items-center">
-              <h3 className="font-bold text-white text-sm">Internal Account Transfer</h3>
-              <button onClick={() => setModalType(null)} className="text-gray-400 hover:text-white font-bold text-base cursor-pointer">✕</button>
-            </div>
-            <form onSubmit={handleTransferSubmit} className="space-y-3">
-              <div>
-                <label className="text-gray-400 block mb-1">From</label>
-                <select value={transferFrom} onChange={(e) => setTransferFrom(e.target.value)} className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white">
-                  <option value="Spot">Spot Account</option>
-                  <option value="Futures">Futures Account</option>
-                </select>
-              </div>
-              <div>
-                <label className="text-gray-400 block mb-1">To</label>
-                <select value={transferTo} onChange={(e) => setTransferTo(e.target.value)} className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white">
-                  <option value="Futures">Futures Account</option>
-                  <option value="Spot">Spot Account</option>
-                </select>
-              </div>
-              <div>
-                <label className="text-gray-400 block mb-1">Coin</label>
-                <select value={transferCoin} onChange={(e) => setTransferCoin(e.target.value)} className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white">
-                  {cryptoList.map(c => (
-                    <option key={c.symbol} value={c.symbol}>{c.symbol}</option>
-                  ))}
-                </select>
-              </div>
-              <div>
-                <label className="text-gray-400 block mb-1">Amount</label>
-                <input type="number" step="any" value={transferAmount} onChange={(e) => setTransferAmount(e.target.value)} placeholder="0.00" required className="w-full bg-[#181a20] border border-gray-700 p-2.5 rounded text-white" />
-              </div>
-              <button type="submit" className="w-full bg-[#f0b90b] text-black font-bold p-2.5 rounded cursor-pointer">Confirm Transfer</button>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Bottom Navigation Bar */}
-      <div className="fixed bottom-0 left-0 right-0 bg-[#1e2329] border-t border-[#2b313a] flex justify-around py-3 z-40">
-        <button onClick={() => setActiveTab('home')} className={`flex flex-col items-center cursor-pointer ${activeTab === 'home' ? 'text-[#f0b90b]' : 'text-gray-400'}`}>
-          <span>🏠</span>
-          <span className="text-[10px] mt-1">Home</span>
-        </button>
-        <button onClick={() => setActiveTab('market')} className={`flex flex-col items-center cursor-pointer ${activeTab === 'market' ? 'text-[#f0b90b]' : 'text-gray-400'}`}>
-          <span>📊</span>
-          <span className="text-[10px] mt-1">Markets</span>
-        </button>
-        <button onClick={() => setActiveTab('trade')} className={`flex flex-col items-center cursor-pointer ${activeTab === 'trade' ? 'text-[#f0b90b]' : 'text-gray-400'}`}>
-          <span>📈</span>
-          <span className="text-[10px] mt-1">Trade</span>
-        </button>
-        <button onClick={() => setActiveTab('futures')} className={`flex flex-col items-center cursor-pointer ${activeTab === 'futures' ? 'text-[#f0b90b]' : 'text-gray-400'}`}>
-          <span>⚡</span>
-          <span className="text-[10px] mt-1">Futures</span>
-        </button>
-        <button onClick={() => setActiveTab('assets')} className={`flex flex-col items-center cursor-pointer ${activeTab === 'assets' ? 'text-[#f0b90b]' : 'text-gray-400'}`}>
-          <span>💰</span>
-          <span className="text-[10px] mt-1">Assets</span>
-        </button>
-      </div>
 
     </div>
   );
