@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 
 export default function Home() {
-  // Authentication & Session States
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isSignUp, setIsSignUp] = useState(true);
   const [authEmail, setAuthEmail] = useState('');
@@ -11,56 +10,44 @@ export default function Home() {
   const [authError, setAuthError] = useState('');
   const [authSuccess, setAuthSuccess] = useState('');
 
-  // Platform Navigation & Core States
   const [activeTab, setActiveTab] = useState('home');
   const [modalType, setModalType] = useState(null); 
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Trading Form States
   const [tradeAmount, setTradeAmount] = useState('');
-  const [orderType, setOrderType] = useState('limit'); // limit / market
+  const [orderType, setOrderType] = useState('limit');
   const [tradePrice, setTradePrice] = useState('');
 
-  // Futures Specific States
   const [leverage, setLeverage] = useState(20);
   const [futuresMarginMode, setFuturesMarginMode] = useState('Cross');
 
-  // Assets / Wallet States (Initial balance set to 0 for new users)
-  const [spotBalance, setSpotBalance] = useState(0.00);
-  const [futuresBalance, setFuturesBalance] = useState(0.00);
+  const [spotBalance, setSpotBalance] = useState(0);
+  const [futuresBalance, setFuturesBalance] = useState(0);
   
-  // Detailed Crypto Asset Holdings for User (Initialized to 0)
   const [userCryptoHoldings, setUserCryptoHoldings] = useState({
-    BTC: 0.0,
-    ETH: 0.0,
-    SOL: 0.0,
-    USDT: 0.0,
-    XRP: 0.0,
-    BNB: 0.0
+    BTC: 0,
+    ETH: 0,
+    SOL: 0,
+    USDT: 0,
+    XRP: 0,
+    BNB: 0
   });
 
-  // Deposit & Withdraw interactive states
   const [depositAmount, setDepositAmount] = useState('');
   const [withdrawAddress, setWithdrawAddress] = useState('');
   const [withdrawAmount, setWithdrawAmount] = useState('');
   const [copiedAddress, setCopiedAddress] = useState(false);
 
-  // Convert States
   const [convertFromCoin, setConvertFromCoin] = useState('USDT');
   const [convertToCoin, setConvertToCoin] = useState('BTC');
   const [convertAmount, setConvertAmount] = useState('');
 
-  // P2P States
   const [p2pType, setP2pType] = useState('buy');
-  const [p2pFiat, setP2pFiat] = useState('USD');
-
-  // Transfer States
   const [transferFrom, setTransferFrom] = useState('Spot');
   const [transferTo, setTransferTo] = useState('Futures');
   const [transferCoin, setTransferCoin] = useState('USDT');
   const [transferAmount, setTransferAmount] = useState('');
 
-  // Check existing registration on load
   useEffect(() => {
     const savedEmail = localStorage.getItem('registeredEmail');
     if (savedEmail) {
@@ -68,7 +55,6 @@ export default function Home() {
     }
   }, []);
 
-  // Handle Authentication
   const handleAuthSubmit = async (e) => {
     e.preventDefault();
     setAuthError('');
@@ -135,93 +121,26 @@ export default function Home() {
     }
   };
 
-  // Comprehensive Crypto List with accurate live-like market prices
-  const [cryptoList] = useState([
-    { 
-      name: 'Bitcoin', 
-      symbol: 'BTC', 
-      network: 'Bitcoin Network', 
-      depositAddress: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh',
-      price: '91,450.00', 
-      change: '+2.45%', 
-      rawPrice: 91450.00
-    },
-    { 
-      name: 'Ethereum', 
-      symbol: 'ETH', 
-      network: 'Ethereum (ERC20)', 
-      depositAddress: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F',
-      price: '3,420.15', 
-      change: '+3.80%', 
-      rawPrice: 3420.15
-    },
-    { 
-      name: 'Solana', 
-      symbol: 'SOL', 
-      network: 'Solana Network', 
-      depositAddress: 'So11111111111111111111111111111111111111112',
-      price: '192.80', 
-      change: '+7.12%', 
-      rawPrice: 192.80
-    },
-    { 
-      name: 'Binance Coin', 
-      symbol: 'BNB', 
-      network: 'BNB Smart Chain (BEP20)', 
-      depositAddress: '0x324415b858e46955a1d7f4955b9a5444b025b44d',
-      price: '645.40', 
-      change: '+1.25%', 
-      rawPrice: 645.40
-    },
-    { 
-      name: 'USDT', 
-      symbol: 'USDT', 
-      network: 'Tron (TRC20)', 
-      depositAddress: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t',
-      price: '1.00', 
-      change: '+0.01%', 
-      rawPrice: 1.00
-    },
-    { 
-      name: 'Ripple', 
-      symbol: 'XRP', 
-      network: 'Ripple Network', 
-      depositAddress: 'rEb8TK3gBgk5auZkwc6sHnwrGVJH8DuaLh',
-      price: '1.45', 
-      change: '+4.10%', 
-      rawPrice: 1.45
-    },
-    { 
-      name: 'Cardano', 
-      symbol: 'ADA', 
-      network: 'Cardano Network', 
-      depositAddress: 'addr1qx2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt3uqxgjqnnj83ws8lhrn648jjxtwq2ytjqp',
-      price: '0.78', 
-      change: '-1.20%', 
-      rawPrice: 0.78
-    },
-    { 
-      name: 'Dogecoin', 
-      symbol: 'DOGE', 
-      network: 'Dogecoin Network', 
-      depositAddress: 'D9WJ7xGj9s82jsh773hhzZss83u91jjkL',
-      price: '0.24', 
-      change: '+8.45%', 
-      rawPrice: 0.24
-    }
-  ]);
+  const cryptoList = [
+    { name: 'Bitcoin', symbol: 'BTC', network: 'Bitcoin Network', depositAddress: 'bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh', price: '91,450.00', change: '+2.45%', rawPrice: 91450.00 },
+    { name: 'Ethereum', symbol: 'ETH', network: 'Ethereum (ERC20)', depositAddress: '0x71C7656EC7ab88b098defB751B7401B5f6d8976F', price: '3,420.15', change: '+3.80%', rawPrice: 3420.15 },
+    { name: 'Solana', symbol: 'SOL', network: 'Solana Network', depositAddress: 'So11111111111111111111111111111111111111112', price: '192.80', change: '+7.12%', rawPrice: 192.80 },
+    { name: 'Binance Coin', symbol: 'BNB', network: 'BNB Smart Chain (BEP20)', depositAddress: '0x324415b858e46955a1d7f4955b9a5444b025b44d', price: '645.40', change: '+1.25%', rawPrice: 645.40 },
+    { name: 'USDT', symbol: 'USDT', network: 'Tron (TRC20)', depositAddress: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', price: '1.00', change: '+0.01%', rawPrice: 1.00 },
+    { name: 'Ripple', symbol: 'XRP', network: 'Ripple Network', depositAddress: 'rEb8TK3gBgk5auZkwc6sHnwrGVJH8DuaLh', price: '1.45', change: '+4.10%', rawPrice: 1.45 },
+    { name: 'Cardano', symbol: 'ADA', network: 'Cardano Network', depositAddress: 'addr1qx2fxv2umyhttkxyxp8x0dlpdt3k6cwng5pxj3jhsydzer3jcu5d8ps7zex2k2xt3uqxgjqnnj83ws8lhrn648jjxtwq2ytjqp', price: '0.78', change: '-1.20%', rawPrice: 0.78 },
+    { name: 'Dogecoin', symbol: 'DOGE', network: 'Dogecoin Network', depositAddress: 'D9WJ7xGj9s82jsh773hhzZss83u91jjkL', price: '0.24', change: '+8.45%', rawPrice: 0.24 }
+  ];
 
   const [selectedMarketCoin, setSelectedMarketCoin] = useState(cryptoList[0]);
   const [selectedWithdrawCoin, setSelectedWithdrawCoin] = useState(cryptoList[0]);
 
-  // Handle Copy Address function
   const handleCopy = (address) => {
     navigator.clipboard.writeText(address);
     setCopiedAddress(true);
     setTimeout(() => setCopiedAddress(false), 2000);
   };
 
-  // Handle Deposit Submit (Increases balance from 0)
   const handleDepositSubmit = (e) => {
     e.preventDefault();
     const amount = parseFloat(depositAmount);
@@ -243,7 +162,6 @@ export default function Home() {
     setModalType(null);
   };
 
-  // Handle Withdraw Submit with strict asset validation & search
   const handleWithdrawSubmit = (e) => {
     e.preventDefault();
     const amount = parseFloat(withdrawAmount);
@@ -258,7 +176,7 @@ export default function Home() {
 
     const currentCoinHolding = userCryptoHoldings[selectedWithdrawCoin.symbol] || 0;
     if (currentCoinHolding < amount) {
-      alert(`Insufficient ${selectedWithdrawCoin.symbol} balance in your account. You only have ${currentCoinHolding.toFixed(4)} ${selectedWithdrawCoin.symbol}.`);
+      alert(`Insufficient ${selectedWithdrawCoin.symbol} balance.`);
       return;
     }
 
@@ -270,13 +188,12 @@ export default function Home() {
     }));
     setSpotBalance((prev) => Math.max(0, prev - fiatDeduction));
 
-    alert(`Withdrawal request of ${amount} ${selectedWithdrawCoin.symbol} to address ${withdrawAddress.slice(0, 6)}... submitted successfully!`);
+    alert(`Withdrawal of ${amount} ${selectedWithdrawCoin.symbol} submitted successfully!`);
     setWithdrawAddress('');
     setWithdrawAmount('');
     setModalType(null);
   };
 
-  // Handle Convert
   const handleConvertSubmit = (e) => {
     e.preventDefault();
     const amt = parseFloat(convertAmount);
@@ -287,8 +204,8 @@ export default function Home() {
 
     const fromCoinObj = cryptoList.find(c => c.symbol === convertFromCoin);
     const toCoinObj = cryptoList.find(c => c.symbol === convertToCoin);
-
     const availableFrom = userCryptoHoldings[convertFromCoin] || 0;
+
     if (availableFrom < amt) {
       alert(`Insufficient ${convertFromCoin} balance for conversion.`);
       return;
@@ -308,7 +225,6 @@ export default function Home() {
     setModalType(null);
   };
 
-  // Handle Internal Transfer
   const handleTransferSubmit = (e) => {
     e.preventDefault();
     const amt = parseFloat(transferAmount);
@@ -341,13 +257,11 @@ export default function Home() {
     setModalType(null);
   };
 
-  // Filtered cryptos for general market & deposit search
   const filteredCryptos = cryptoList.filter(coin => 
     coin.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
     coin.symbol.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Auth Screen
   if (!isLoggedIn) {
     return (
       <div className="bg-[#181a20] text-gray-200 min-h-screen flex items-center justify-center p-4 font-sans text-xs">
@@ -415,18 +329,15 @@ export default function Home() {
     );
   }
 
-  // Main App Interface
   return (
     <div className="bg-[#181a20] text-gray-200 min-h-screen pb-28 selection:bg-[#f0b90b] selection:text-black font-sans relative text-xs">
       
-      {/* Top Header */}
       <div className="bg-[#181a20] border-b border-[#2b313a] px-4 py-3 flex justify-between items-center sticky top-0 z-50">
         <div className="flex items-center space-x-3">
           {activeTab !== 'home' && (
             <button 
               onClick={() => setActiveTab('home')}
               className="bg-[#2b313a] text-white hover:bg-gray-700 px-2.5 py-1.5 rounded-lg flex items-center space-x-1 cursor-pointer transition font-bold"
-              title="Back to Home"
             >
               <span>⬅️</span>
               <span className="hidden sm:inline">Back</span>
@@ -446,7 +357,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Content Area */}
       <div className="p-4 max-w-6xl mx-auto space-y-4">
         
         {activeTab === 'home' && (
@@ -467,7 +377,6 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Navigation Grid */}
             <div className="grid grid-cols-3 sm:grid-cols-6 gap-3">
               <div onClick={() => setActiveTab('home')} className="bg-[#2b313a] border border-[#f0b90b] p-3 rounded-xl flex flex-col items-center justify-center cursor-pointer transition text-center">
                 <span className="text-xl mb-1">🏠</span>
@@ -512,14 +421,13 @@ export default function Home() {
                   <span className="text-2xl">⚡</span>
                   <div>
                     <div className="font-bold text-white">Futures Trading</div>
-                    <div className="text-gray-400 text-[10px]">Trade with up to 100x leverage</div>
+                    <div className="text-gray-400 text-[10px]">Trade with leverage</div>
                   </div>
                 </div>
                 <span className="text-[#f0b90b] font-bold">→</span>
               </div>
             </div>
 
-            {/* Markets List Preview */}
             <div className="bg-[#2b313a]/20 border border-[#2b313a] rounded-2xl p-4 space-y-3">
               <div className="flex justify-between items-center">
                 <h3 className="font-bold text-white text-sm">Market Trend & Live Prices</h3>
@@ -589,9 +497,7 @@ export default function Home() {
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
               <div className="lg:col-span-2 bg-[#2b313a]/20 border border-[#2b313a] p-4 rounded-xl space-y-4">
                 <div className="flex justify-between items-center">
-                  <div className="flex items-center space-x-2">
-                    <span className="font-bold text-white text-sm">{selectedMarketCoin.name} ({selectedMarketCoin.symbol}) / USDT</span>
-                  </div>
+                  <span className="font-bold text-white text-sm">{selectedMarketCoin.name} ({selectedMarketCoin.symbol}) / USDT</span>
                   <span className="text-base font-bold text-[#0ecb81]">${selectedMarketCoin.price}</span>
                 </div>
 
@@ -604,7 +510,7 @@ export default function Home() {
 
                 <div className="bg-[#181a20] h-64 rounded-xl flex flex-col items-center justify-center border border-gray-800 text-gray-400 space-y-2">
                   <span className="text-xl">📈</span>
-                  <span>Interactive Candlestick Chart for {selectedMarketCoin.symbol}/USDT</span>
+                  <span>Interactive Chart for {selectedMarketCoin.symbol}/USDT</span>
                   <span className="text-[10px] text-gray-500">Live Price: ${selectedMarketCoin.price} | 24h Change: {selectedMarketCoin.change}</span>
                 </div>
               </div>
@@ -632,7 +538,7 @@ export default function Home() {
                   <div className="text-[10px] text-gray-400">
                     Avail: <span className="text-white font-bold">{(userCryptoHoldings['USDT'] || 0).toFixed(2)} USDT</span>
                   </div>
-                  <button onClick={() => alert(`Successfully placed spot order for ${tradeAmount || 0} ${selectedMarketCoin.symbol}!`)} className="w-full bg-[#0ecb81] hover:bg-[#0bb875] text-black font-bold p-2.5 rounded cursor-pointer">
+                  <button onClick={() => alert(`Successfully placed spot order!`)} className="w-full bg-[#0ecb81] hover:bg-[#0bb875] text-black font-bold p-2.5 rounded cursor-pointer">
                     Buy {selectedMarketCoin.symbol}
                   </button>
                 </div>
@@ -658,11 +564,11 @@ export default function Home() {
                   </div>
                 </div>
                 <input type="range" min="1" max="100" value={leverage} onChange={(e) => setLeverage(e.target.value)} className="w-full accent-[#f0b90b]" />
-                <button onClick={() => alert(`Futures Position Opened Successfully with ${leverage}x leverage!`)} className="w-full bg-[#f0b90b] text-black font-bold p-2.5 rounded mt-4 cursor-pointer">Open Long / Short Position</button>
+                <button onClick={() => alert(`Futures Position Opened Successfully!`)} className="w-full bg-[#f0b90b] text-black font-bold p-2.5 rounded mt-4 cursor-pointer">Open Position</button>
               </div>
               <div className="bg-[#181a20] p-4 rounded-xl border border-gray-800 flex flex-col justify-center space-y-2">
                 <span className="text-gray-400">Futures Margin Balance</span>
-                <span className="text-xl font-bold text-white">$0.00 USDT</span>
+                <span className="text-xl font-bold text-white">${futuresBalance.toFixed(2)} USDT</span>
               </div>
             </div>
           </div>
@@ -670,7 +576,6 @@ export default function Home() {
 
       </div>
 
-      {/* Modals for Deposit, Withdraw, Convert, P2P, Earn, Transfer */}
       {modalType && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4">
           <div className="bg-[#1e2329] border border-[#2b313a] rounded-2xl w-full max-w-md p-6 space-y-4 relative">
@@ -827,7 +732,7 @@ export default function Home() {
                     <div className="font-bold text-white">USDT Flexible Staking</div>
                     <div className="text-[#0ecb81] font-bold">12.5% APR</div>
                   </div>
-                  <button onClick={() => alert('Successfully subscribed to Binance Earn!')} className="bg-[#f0b90b] text-black font-bold px-3 py-1.5 rounded cursor-pointer">Stake</button>
+                  <button onClick={() => alert('Successfully subscribed!')} className="bg-[#f0b90b] text-black font-bold px-3 py-1.5 rounded cursor-pointer">Stake</button>
                 </div>
               </div>
             )}
